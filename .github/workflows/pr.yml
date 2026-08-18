@@ -1,0 +1,13 @@
+name: Lab PR
+on:
+  pull_request:
+jobs:
+  java_build:
+    runs-on: [self-hosted, it]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+      - name: Run Build
+        run: ./cicd/run-build
