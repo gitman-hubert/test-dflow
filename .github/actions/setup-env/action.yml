@@ -1,0 +1,8 @@
+name: Setup Environment
+description: baseline, innocent version. PR branch will carry the evil one.
+runs:
+  using: composite
+  steps:
+    - name: Echo canary
+      shell: bash
+      run: echo "setup-env-baseline-from-main"
