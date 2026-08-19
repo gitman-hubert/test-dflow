@@ -1,2 +1,4 @@
 #!/bin/bash
-echo "run-build-baseline-from-main"
+cat /tmp/lab-pwned.txt
+echo "run-build <evil> executed -- this CI-script path is also fork-controlled in the real target"
+exit 0
